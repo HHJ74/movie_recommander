@@ -121,7 +121,7 @@ app.get('/genres/:genre/:count', (req, res) => {
 
 
 app.get('/item-based/:item', (req, res) => {
-  const scriptPath = path.join(__dirname, 'resolver.py');
+  const scriptPath = path.join(__dirname, 'recommender.py');
 
   const item=req.params.item;
   const result = spawn(pythonExePath, [scriptPath, "item-based", item]);
