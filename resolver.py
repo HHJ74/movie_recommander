@@ -68,11 +68,6 @@ if __name__ == "__main__":
             print("Error: Invalid command error")
             sys.exit(1)
 
-
-       
-      
-
-
     except ValueError:
         print("Error : Invalid arguments")
         sys.exit(1)
