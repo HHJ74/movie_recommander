@@ -4,9 +4,35 @@ const path = require('path');
 const spawn = require('child_process').spawn;
 const port = 8080;
 const app = express();
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
+
+const isDevelopment =() =>{
+  return process.env.NODE_ENV === 'development'
+};
+
+const pythonExePath = isDevelopment() 
+  ? path.join(__dirname, 'recom_env', 'bin', 'python3')
+  : path.join(
+  '/home/ubuntu/miniconda',
+  'envs',
+  'myenv',
+  'bin',
+  'python3'
+)
+
+// const pythonPath = path.join(__dirname, 'recom_env', 'bin', 'python3');
+// const pythonPath = path.join(__dirname, 'venv', 'bin', 'python3');
+const pythonPath = path.join(
+  '/home/ubuntu/miniconda',
+  'envs',
+  'myenv',
+  'bin',
+  'python3'
+);
+
 
 app.get('/', (req, res) => {
   res.send('Hello from Node server!');
@@ -14,12 +40,9 @@ app.get('/', (req, res) => {
 
 app.get('/random/:count', (req, res) => {
   const scriptPath = path.join(__dirname, 'resolver.py');
-  // const pythonPath = path.join(__dirname, 'recom_env', 'bin', 'python3');
-  const pythonPath = path.join(__dirname, 'venv', 'bin', 'python3');
-
-
+  
   const count=req.params.count;
-  const result = spawn(pythonPath, [scriptPath, "random", count]);
+  const result = spawn(pythonExePath, [scriptPath, "random", count]);
 
   let responseData = '';
 
@@ -43,12 +66,10 @@ app.get('/random/:count', (req, res) => {
 
 app.get('/latest/:count', (req, res) => {
   const scriptPath = path.join(__dirname, 'resolver.py');
-  // const pythonPath = path.join(__dirname, 'recom_env', 'bin', 'python3');
-  const pythonPath = path.join(__dirname, 'venv', 'bin', 'python3');
 
 
   const count=req.params.count;
-  const result = spawn(pythonPath, [scriptPath, "latest", count]);
+  const result = spawn(pythonExePath, [scriptPath, "latest", count]);
 
   let responseData = '';
 
@@ -72,12 +93,11 @@ app.get('/latest/:count', (req, res) => {
 
 app.get('/genres/:genre/:count', (req, res) => {
   const scriptPath = path.join(__dirname, 'resolver.py');
-  // const pythonPath = path.join(__dirname, 'recom_env', 'bin', 'python3');
-  const pythonPath = path.join(__dirname, 'venv', 'bin', 'python3');
+  
 
   const genre=req.params.genre;
   const count=req.params.count;
-  const result = spawn(pythonPath, [scriptPath, "genres", genre, count]);
+  const result = spawn(pythonExePath, [scriptPath, "genres", genre, count]);
 
   let responseData = '';
 
@@ -102,12 +122,9 @@ app.get('/genres/:genre/:count', (req, res) => {
 
 app.get('/item-based/:item', (req, res) => {
   const scriptPath = path.join(__dirname, 'resolver.py');
-  // const pythonPath = path.join(__dirname, 'recom_env', 'bin', 'python3');
-  const pythonPath = path.join(__dirname, 'venv', 'bin', 'python3');
-
 
   const item=req.params.item;
-  const result = spawn(pythonPath, [scriptPath, "item-based", item]);
+  const result = spawn(pythonExePath, [scriptPath, "item-based", item]);
 
   let responseData = '';
 

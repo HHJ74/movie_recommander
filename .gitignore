@@ -1,2 +1,4 @@
 /node_modules
 /recom_env
+
+.env
